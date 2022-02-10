@@ -1,7 +1,17 @@
+import Sidebar from "@/component/organisms/Sidebar";
 import type { NextPage } from "next";
 
 const Home: NextPage = () => {
-  return <h1 className="text-2xl text-violet-600">Hello World</h1>;
+  return (
+    <div className=" bg-gray-900 h-screen overflow-hidden">
+      <main>
+        <Sidebar />
+        {/* Center */}
+      </main>
+
+      <footer>{/* Player */}</footer>
+    </div>
+  );
 };
 
 export default Home;
