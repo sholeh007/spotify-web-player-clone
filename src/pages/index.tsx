@@ -1,15 +1,19 @@
+import Content from "@/component/organisms/Content";
+import Footer from "@/component/organisms/Footer";
 import Sidebar from "@/component/organisms/Sidebar";
 import type { NextPage } from "next";
 
 const Home: NextPage = () => {
   return (
     <div className=" bg-gray-900 h-screen overflow-hidden">
-      <main>
+      <main className="flex">
         <Sidebar />
-        {/* Center */}
+        <Content />
       </main>
 
-      <footer>{/* Player */}</footer>
+      <footer className="relative">
+        <Footer />
+      </footer>
     </div>
   );
 };

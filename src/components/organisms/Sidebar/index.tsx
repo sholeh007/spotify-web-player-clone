@@ -5,7 +5,7 @@ import { signOut } from "next-auth/react";
 
 export default function Sidebar() {
   return (
-    <div className="text-gray-500 p-5 text-sm border-r border-gray-700">
+    <div className=" text-gray-500 p-5 text-sm border-r border-gray-700 overflow-y-auto scrollbar-hide h-screen">
       <div className="space-y-4 ">
         <Button
           title="Log out"
