@@ -37,8 +37,6 @@ export default function Content() {
       .catch((error) => console.log("something went wrong", error));
   }, [spotifyApi, playlistId, setPlaylist]);
 
-  console.log(playlist);
-
   return (
     <div className="flex-grow">
       <header className="absolute top-5 right-8">

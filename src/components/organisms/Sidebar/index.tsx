@@ -1,5 +1,5 @@
 import { items, items2 } from "./dataItem";
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useCallback, useEffect, useState } from "react";
 import { signOut, useSession } from "next-auth/react";
 import { useAtom } from "jotai";
 import { playlistIdState } from "src/store/playlist";
@@ -8,17 +8,20 @@ import useSpotify from "hooks/useSpotify";
 
 export default function Sidebar() {
   const spotifyApi = useSpotify();
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
   const [playlist, setPlaylist] = useState<any>([]);
   const [, setPlaylistId] = useAtom(playlistIdState);
 
+  const getPlaylist = useCallback(async () => {
+    const data = await spotifyApi.getUserPlaylists();
+    setPlaylist(data.body.items);
+  }, [spotifyApi]);
+
   useEffect(() => {
     if (spotifyApi.getAccessToken()) {
-      spotifyApi.getUserPlaylists().then((data: any) => {
-        setPlaylist(data.body.items);
-      });
+      getPlaylist();
     }
-  }, [session, spotifyApi]);
+  }, [getPlaylist, session, spotifyApi]);
 
   return (
     <div className=" text-gray-500 p-5 text-xs lg:text-sm w-52 border-r border-gray-700 overflow-y-auto scrollbar-hide h-screen hidden md:inline-flex">
