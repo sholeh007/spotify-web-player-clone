@@ -1,11 +1,14 @@
 import Image from "next/image";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import { ChevronDownIcon } from "@heroicons/react/outline";
 import { useEffect, useState } from "react";
 import { getRandomInt } from "lib/getRandomInt";
-import { useAtom } from "jotai";
+import { useAtom, useAtomValue } from "jotai";
 import { playlistState, playlistIdState } from "src/store/playlist";
 import useSpotify from "hooks/useSpotify";
+import Songs from "@/component/organisms/Songs";
+import Button from "@/component/atoms/Button";
+import csx from "classnames";
 
 const colors = [
   "from-indigo-500",
@@ -21,8 +24,14 @@ export default function Content() {
   const spotifyApi = useSpotify();
   const { data: session } = useSession();
   const [color, setColor] = useState<string | null>(null);
-  const [playlistId] = useAtom(playlistIdState);
   const [playlist, setPlaylist]: any = useAtom(playlistState);
+  const playlistId = useAtomValue(playlistIdState);
+  const [detail, setDetail] = useState<boolean>(false);
+
+  const classname = csx({
+    "absolute top-5 right-8 bg-gray-900": true,
+    "rounded-full": !detail,
+  });
 
   useEffect(() => {
     setColor(colors[getRandomInt(6)]);
@@ -39,8 +48,11 @@ export default function Content() {
 
   return (
     <div className="flex-grow">
-      <header className="absolute top-5 right-8">
-        <div className="flex items-center space-x-2 bg-gray-900 rounded-full opacity-90 hover:opacity-80 cursor-pointer pr-2">
+      <header className={classname}>
+        <div
+          className="flex items-center space-x-2 opacity-90 hover:opacity-80 cursor-pointer pr-2"
+          onClick={() => setDetail(!detail)}
+        >
           <Image
             className="rounded-full"
             src={session?.user?.image || "/img/avatar.svg"}
@@ -53,26 +65,26 @@ export default function Content() {
           <h2 className="text-slate-100">{session?.user?.name}</h2>
           <ChevronDownIcon className="h-5 w-5 text-slate-100" />
         </div>
+        {detail && (
+          <>
+            <div className=" mt-2 border-t-[1px] border-gray-700 " />
+            <div className="text-slate-100 p-2 hover:opacity-80 ">
+              <Button onClick={() => signOut()} title="logout" />
+            </div>
+          </>
+        )}
       </header>
       <section
         className={`flex items-end space-x-7 bg-gradient-to-b to-black ${color} h-80 text-slate-100 p-8`}
       >
         <div className="shadow-2xl">
           <Image
-            src={
-              playlist?.images?.[0]?.url?.length > 0
-                ? playlist?.images?.[0]?.url
-                : "/img/image-default.svg"
-            }
+            src={playlist?.images?.[0]?.url || "/img/image-default.svg"}
             width={176}
             height={176}
             alt="img"
             placeholder="blur"
-            blurDataURL={
-              playlist?.images[0].url.length > 0
-                ? playlist.images[0].url
-                : "/img/image-default.svg"
-            }
+            blurDataURL={playlist?.images?.[0]?.url || "/img/image-default.svg"}
           />
         </div>
         <div className="text-slate-100">
@@ -86,9 +98,12 @@ export default function Content() {
             {`${new Intl.NumberFormat().format(
               playlist?.followers?.total
             )} likes` || ""}{" "}
-            - {`${playlist?.tracks?.total} songs` || ""}
+            - {`${playlist?.tracks?.total} Songss` || ""}
           </small>
         </div>
+      </section>
+      <section className="max-h-screen overflow-y-auto overscroll-y-none scrollbar-hide p-4">
+        <Songs />
       </section>
     </div>
   );
