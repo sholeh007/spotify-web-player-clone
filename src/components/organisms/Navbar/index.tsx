@@ -43,7 +43,9 @@ export default function Navbar() {
             placeholder="blur"
             blurDataURL={session?.user?.image || "/img/avatar.svg"}
           />
-          <h2 className="text-slate-100">{session?.user?.name}</h2>
+          <h2 className="text-slate-100 hidden md:block">
+            {session?.user?.name}
+          </h2>
           {detail ? (
             <ChevronUpIcon className="h-5 w-5 text-slate-100" />
           ) : (

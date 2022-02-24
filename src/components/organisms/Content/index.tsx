@@ -28,7 +28,7 @@ export default function Content() {
   }, [spotifyApi, playlistId, setPlaylist]);
 
   return (
-    <div className="flex-grow relative">
+    <div className="flex-grow relative h-screen overflow-y-auto scrollbar-hide">
       <Navbar />
       <section
         className={`flex items-end space-x-7 bg-gradient-to-b to-black ${color} h-80 text-slate-100 p-8`}
@@ -44,21 +44,23 @@ export default function Content() {
           />
         </div>
         <div className="text-slate-100">
-          <p>PLAYLIST</p>
-          <h1 className="text-2xl md:text-3xl xl:text-5xl font-bold">
+          <p className="text-sm md:text-base">PLAYLIST</p>
+          <h1 className="text-lg md:text-3xl xl:text-5xl font-bold">
             {playlist?.name}
           </h1>
-          <p className="text-slate-400 py-2">{playlist?.description}</p>
+          <p className="text-slate-400 py-2 text-xs md:text-base">
+            {playlist?.description}
+          </p>
           <small className="font-semibold">
             {playlist?.owner?.display_name} -{" "}
             {`${new Intl.NumberFormat().format(
               playlist?.followers?.total
             )} likes` || ""}{" "}
-            - {`${playlist?.tracks?.total} Songss` || ""}
+            - {`${playlist?.tracks?.total} Songs` || ""}
           </small>
         </div>
       </section>
-      <section className="max-h-screen overflow-y-auto overscroll-y-none scrollbar-hide p-4 pl-5">
+      <section className="p-4 pl-5 pb-28">
         <Songs />
       </section>
     </div>

@@ -15,7 +15,7 @@ export default function Sidebar() {
   const [showSide, setShowSide] = useAtom(sideState);
 
   const classname = csx(
-    "text-gray-500 p-5 text-xs lg:text-sm w-48 border-r border-gray-700 overflow-y-auto scrollbar-hide h-screen md:block",
+    "text-gray-500 p-5 pb-36 text-xs lg:text-sm w-48 border-r border-gray-700 overflow-y-auto scrollbar-hide h-screen md:block",
     { hidden: !showSide }
   );
 
