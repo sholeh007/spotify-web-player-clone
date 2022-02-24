@@ -28,8 +28,8 @@ export default NextAuth({
   // Configure one or more authentication providers
   providers: [
     Spotify({
-      clientId: process.env.NEXT_PUBLIC_SPOTIFY_ID,
-      clientSecret: process.env.NEXT_PUBLIC_SPOTIFY_SECRET,
+      clientId: process.env.NEXT_PUBLIC_SPOTIFY_ID || "",
+      clientSecret: process.env.NEXT_PUBLIC_SPOTIFY_SECRET || "",
       authorization: LOGIN_URL,
     }),
   ],
@@ -38,7 +38,7 @@ export default NextAuth({
     signIn: "/login",
   },
   callbacks: {
-    async jwt({ token, account, user }) {
+    async jwt({ token, account, user }: any) {
       // initial sign
       if (account && user)
         return {
@@ -57,7 +57,7 @@ export default NextAuth({
       console.log("token refresh");
       return await refreshAccessToken(token);
     },
-    async session({ session, token }) {
+    async session({ session, token }: any) {
       session.user.accessToken = token.accessToken;
       session.user.refreshToken = token.refreshToken;
       session.user.username = token.username;
