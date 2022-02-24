@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import { deviceId } from "src/store/songAtom";
 
 export default function useSpotify() {
-  const { data: session } = useSession();
+  const { data: session }: any = useSession();
   const setDeviceId = useSetAtom(deviceId);
 
   useEffect(() => {
@@ -14,7 +14,9 @@ export default function useSpotify() {
         signIn();
       }
       spotifyApi.setAccessToken(session.user.accessToken);
-      spotifyApi.getMyDevices().then((data) => setDeviceId(data.body.devices));
+      spotifyApi
+        .getMyDevices()
+        .then((data: any) => setDeviceId(data?.body?.devices));
     }
     return;
   }, [session, setDeviceId]);
